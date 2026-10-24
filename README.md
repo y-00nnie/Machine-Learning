@@ -7,15 +7,17 @@ Trabalho da disciplina de Inteligência Artificial-2026.1 da graduação em Ciê
 
 ### extensao
 
+Extensão em metros de cada ônibus.
+
 ### consorcio
 
 - Intersul
 - Santa Cruz
 - Internorte
 - MOBI-Rio
-- GTU
+- GTU -> Guaratiba Transportes Urbanos
 - Transcarioca
-- TUSE
+- TUSE -> Transportes Urbanos Sepetiba
   
 ### tipo_rota
 
@@ -32,6 +34,8 @@ Trabalho da disciplina de Inteligência Artificial-2026.1 da graduação em Ciê
 
 ### destino
 
+Destino do ônibus.
+
 ### servico
 
 Número da linha
@@ -45,3 +49,5 @@ Número da linha
 - D -> domingo
 
 ### descricao
+
+Apenas alguns ônibus possuem descrição.
