@@ -19,6 +19,8 @@ from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 
+from sklearn.neighbors import KNeighborsClassifier
+
 
 
 def flatten_text(X):
@@ -101,6 +103,8 @@ scores = cross_val_score(
     n_jobs=-1, error_score="raise",   # ← mostra o traceback real se falhar
 )
 
+print(f"Random Forest — F1-macro (CV 5-fold): {scores.mean():.4f} ± {scores.std():.4f}")
+
 # Treino e avaliação
 
 # O treino do modelo foi feito com 75% dos dados enquanto 25% foi reservado para testar ele
@@ -124,6 +128,50 @@ sns.heatmap(
 )
 plt.ylabel("real")
 plt.xlabel("predito")
-plt.title("Matriz de confusão — consórcio")
+plt.title("Matriz de confusão — consórcio (Random Forest)")
 plt.tight_layout()
-plt.savefig("confusao_consorcio.png")
+plt.savefig("confusao_consorcio_RF.png")
+plt.close()
+
+
+# ---K-Nearest Neighbors
+
+model_knn = Pipeline([
+    ("prep", preprocess),
+    ("clf", KNeighborsClassifier(n_neighbors=5, weights="distance"))
+])
+
+
+# Validação cruzada
+
+scores_knn = cross_val_score(
+    model_knn, X, y, cv=cv, scoring="f1_macro",
+    n_jobs=-1, error_score="raise",
+)
+
+print(f"\nKNN — F1-macro (CV 5-fold): {scores_knn.mean():.4f} ± {scores_knn.std():.4f}")
+
+# Treino e avaliação
+
+model_knn.fit(X_train, y_train)
+y_pred_knn = model_knn.predict(X_test)
+
+print("\n===== Classification Report — KNN =====")
+print(classification_report(y_test, y_pred_knn, zero_division=0))
+
+# Matriz de confusão
+
+cm_knn = confusion_matrix(y_test, y_pred_knn, labels=labels)
+
+plt.figure(figsize=(8, 6))
+sns.heatmap(
+    pd.DataFrame(cm_knn, index=labels, columns=labels),
+    annot=True, fmt="d", cmap="Blues",
+)
+
+plt.ylabel("real")
+plt.xlabel("predito")
+plt.title("Matriz de confusão — consórcio (K-Nearest Neighbors)")
+plt.tight_layout()
+plt.savefig("confusao_consorcio_KNN.png")
+plt.close()
