@@ -103,6 +103,7 @@ scores = cross_val_score(
 
 # Treino e avaliação
 
+# O treino do modelo foi feito com 75% dos dados enquanto 25% foi reservado para testar ele
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.25, stratify=y, random_state=42
